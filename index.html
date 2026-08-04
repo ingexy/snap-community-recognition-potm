@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recognition Post - Snap Community</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Karla:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B9D;
+            --secondary: #C44569;
+            --accent: #FFC048;
+            --dark: #1a1a2e;
+            --light: #fff;
+            --shadow: rgba(196, 69, 105, 0.3);
+        }
+
+        body {
+            font-family: 'Karla', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: drift 20s linear infinite;
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 30px); }
+        }
+
+        h1 {
+            font-family: 'Righteous', cursive;
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+            letter-spacing: 4px;
+            position: relative;
+        }
+
+        .form-section {
+            padding: 2.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Karla', sans-serif;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23FF6B9D' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 20px;
+            padding-right: 3rem;
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 1.25rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 6px 20px var(--shadow);
+            font-family: 'Karla', sans-serif;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+
+        .output-section {
+            padding: 2.5rem;
+            background: #f8f9fa;
+            border-top: 3px solid var(--primary);
+            display: none;
+        }
+
+        .output-section.show {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .output-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            white-space: pre-wrap;
+            font-family: 'Karla', monospace;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .copy-btn {
+            background: var(--accent);
+            color: var(--dark);
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Karla', sans-serif;
+        }
+
+        .copy-btn:hover {
+            background: #ffd76e;
+            transform: translateY(-2px);
+        }
+
+        .copy-btn.copied {
+            background: #4ecdc4;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+                letter-spacing: 2px;
+            }
+
+            .form-section, .output-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>RECOGNITION POST</h1>
+            <div class="subtitle">SNAP COMMUNITY PAGE</div>
+        </div>
+
+        <div class="form-section">
+            <div class="input-group">
+                <label for="snap-select">Select Snap Community</label>
+                <select id="snap-select">
+                    <option value="@snap_allsports">@snap_allsports</option>
+                    <option value="@snap_toys">@snap_toys</option>
+                    <option value="@snap_communityarts">@snap_communityarts</option>
+                    <option value="@snap_gardening">@snap_gardening</option>
+                    <option value="@snap_middleeast">@snap_middleeast</option>
+                    <option value="@snap_fishing">@snap_fishing</option>
+                    <option value="@snap_potd">@snap_potd</option>
+                    <option value="@snap_minimal">@snap_minimal</option>
+                    <option value="@snap_nightshots">@snap_nightshots</option>
+                    <option value="@snap_moody">@snap_moody</option>
+                    <option value="@snap_colorsplash">@snap_colorsplash</option>
+                    <option value="@snap_bnw">@snap_bnw</option>
+                    <option value="@snap_abandoned">@snap_abandoned</option>
+                    <option value="@snap_bridge">@snap_bridge</option>
+                    <option value="@snap_canada">@snap_canada</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="name-input">Username (without @)</label>
+                <input type="text" id="name-input" placeholder="e.g. johndoe">
+            </div>
+
+            <div class="input-group">
+                <label for="link-input">Link to Selection</label>
+                <input type="url" id="link-input" placeholder="https://vero.co/...">
+            </div>
+
+            <button class="generate-btn" onclick="generatePost()">Generate Post</button>
+        </div>
+
+        <div class="output-section" id="output-section">
+            <div class="output-box" id="output-box"></div>
+            <button class="copy-btn" id="copy-btn" onclick="copyToClipboard()">📋 Copy to Clipboard</button>
+        </div>
+    </div>
+
+    <script>
+        function generatePost() {
+            const snap = document.getElementById('snap-select').value;
+            const name = document.getElementById('name-input').value.trim();
+            const link = document.getElementById('link-input').value.trim();
+
+            if (!name) {
+                alert('Please enter a username!');
+                return;
+            }
+
+            if (!link) {
+                alert('Please enter a link!');
+                return;
+            }
+
+            const post = `Recognition post ${snap}
+.
+✨🏆 PHOTO OF THE MONTH WINNER  🏆✨
+_______________________________
+.
+@${name}
+.
+✨✨ C O N G R A T U L A T I O N S ✨✨
+.
+・────•✧・✧✼✧・✧・────•
+👇LOOK AT THIS FABULOUS SELECTION👇
+${link}
+・────•✧・✧✼✧・✧・────•
+.
+Join vero.co/snap_community to be a part of a creative, supportive and engaging community.
+.
+Please check out vero.co/snap_kingdom for more of our Snap Community pages.
+.
+For membership inquiries, contact vero.co/snap_community_member
+.`;
+
+            document.getElementById('output-box').textContent = post;
+            document.getElementById('output-section').classList.add('show');
+            
+            // Scroll to output
+            document.getElementById('output-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function copyToClipboard() {
+            const outputBox = document.getElementById('output-box');
+            const copyBtn = document.getElementById('copy-btn');
+            const text = outputBox.textContent;
+            
+            // Try modern clipboard API first
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    copyBtn.textContent = '✓ Copied!';
+                    copyBtn.classList.add('copied');
+                    
+                    setTimeout(() => {
+                        copyBtn.textContent = '📋 Copy to Clipboard';
+                        copyBtn.classList.remove('copied');
+                    }, 2000);
+                }).catch(err => {
+                    // Fallback to textarea method
+                    fallbackCopy(text, copyBtn);
+                });
+            } else {
+                // Fallback for older browsers
+                fallbackCopy(text, copyBtn);
+            }
+        }
+
+        function fallbackCopy(text, copyBtn) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
+                copyBtn.textContent = '✓ Copied!';
+                copyBtn.classList.add('copied');
+                
+                setTimeout(() => {
+                    copyBtn.textContent = '📋 Copy to Clipboard';
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                alert('Could not copy. Please select the text manually.');
+            }
+            
+            document.body.removeChild(textarea);
+        }
+
+        // Enter key support
+        document.getElementById('link-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                generatePost();
+            }
+        });
+    </script>
+</body>
+</html>
